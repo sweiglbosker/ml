@@ -1,6 +1,6 @@
 all: example
 
-example: example.c ml.c 
+example: example.c ml.c matrix.c
 
 clean:
 	rm -rf *.o example
