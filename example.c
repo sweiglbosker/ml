@@ -20,6 +20,6 @@ int main(int argc, char *argv[])
     
 
 
-    struct Model *model = gradient_descent(x_data, y_data, NFEATURES, DATA_SIZE, 0, 0, 0.05, 1000);
+    struct Model *model = gradient_descent(NFEATURES, DATA_SIZE, x, y_data,  0, 0, 0.05, 1000);
     free(model);
 }
