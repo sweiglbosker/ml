@@ -20,3 +20,13 @@ double *matrix_from_array(size_t rows, size_t cols, double arr[rows][cols])
 
         return matrix;
 }
+
+double dot_product(size_t n, double *x, double *y)
+{
+        double dot = 0.0;
+      
+        for (int i = 0; i < n; i++)
+                dot += x[i] * y[i];
+
+        return dot;
+}
