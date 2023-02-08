@@ -37,9 +37,10 @@ double cost(size_t n, size_t m, double *x, double *w, double b, double *y)
         return (1.0/(2.0 * m)) * cost; 
 }
 
-struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b)
+struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b, Gradient *gradient)
 {
-        struct Gradient *gradient = alloc_gradient(n);
+	if (gradient->n != n)
+		return NULL;
 
         for (int i = 0; i < m; i++) {
                 double d = evalute(n, &(x[i * n]), w, b) - y[i];

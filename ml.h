@@ -35,7 +35,7 @@ inline double evalute(int n, double *x, double *w, double b);
 
 double cost(size_t n, size_t m, double *x, double *w, double b, double *y);
 
-struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b);
+struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b, struct Gradient *gradient);
 
 struct Model *gradient_descent(size_t n, size_t m, double *x, double *y, double w_initial,
                 double b_initial, double learning_rate, size_t max_iterations);
