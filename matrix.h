@@ -8,4 +8,12 @@ inline double *alloc_matrix(size_t rows, size_t cols);
  */
 double *matrix_from_array(size_t rows, size_t cols, double arr[rows][cols]);
 
+void matrix_fill(double *matrix, double value, size_t n);
+
+void matrix_mul(double *a, double *b, size_t n);
+
+void matrix_mul_scalar(double *matrix, double scalar, int n);
+
 double dot_product(size_t n, double *x, double *y);
+
+

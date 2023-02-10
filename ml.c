@@ -37,7 +37,7 @@ double cost(size_t n, size_t m, double *x, double *w, double b, double *y)
         return (1.0/(2.0 * m)) * cost; 
 }
 
-struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b, Gradient *gradient)
+struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b, struct Gradient *gradient)
 {
 	if (gradient->n != n)
 		return NULL;
@@ -62,6 +62,15 @@ struct Model *gradient_descent(size_t n, size_t m, double *x, double *y, double 
                 double b_initial, double learning_rate, size_t max_iterations)
 {
         struct Model *model = alloc_model(n);
+        struct Gradient *gradient = alloc_gradient(n);
+        
+        matrix_fill(n, w_initial, model->w); 
+        model->b = b_initial;
 
+        for (int i = 0; i < max_iterations; i++) {
+                compute_gradient(n, m, x, y, model->w, model->b, gradient); 
+                model->w -= matrix_mul_scalar(gradient->dj_dw, learning_rate, n);
+                model->b -= learning_rate * gradient->dj_db;
+        }
         return model;
 }
