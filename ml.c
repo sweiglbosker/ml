@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -22,7 +23,7 @@ struct Gradient *alloc_gradient(size_t n)
         return gradient;
 }
 
-inline double evalute(int n, double *x, double *w, double b) 
+double evalute(int n, double *x, double *w, double b) 
 {
         return (dot_product(n, x, w) + b); 
 }
@@ -34,16 +35,14 @@ double cost(size_t n, size_t m, double *x, double *w, double b, double *y)
                 double d = evalute(n, &(x[i*n]), w, b) - y[i];
                 cost += d * d;
         }
-        return (1.0/(2.0 * m)) * cost; 
+        cost *= (1.0/(2.0 * m));
+        return cost;
 }
 
 struct Gradient *compute_gradient(size_t n, size_t m, double *x, double *y, double *w, double b, struct Gradient *gradient)
 {
-	if (gradient->n != n)
-		return NULL;
-
         for (int i = 0; i < m; i++) {
-                double d = evalute(n, &(x[i * n]), w, b) - y[i];
+                double d = evalute(n, &(x[i * m]), w, b) - y[i];
 
                 for (int j = 0; j < n; j++)
                         gradient->dj_dw[j] += d * x[i * j];
@@ -64,13 +63,17 @@ struct Model *gradient_descent(size_t n, size_t m, double *x, double *y, double 
         struct Model *model = alloc_model(n);
         struct Gradient *gradient = alloc_gradient(n);
         
-        matrix_fill(n, w_initial, model->w); 
+        vector_fill(model->w, w_initial, n); 
         model->b = b_initial;
-
+        print_vector(model->w, n);
+        putchar('\n');
         for (int i = 0; i < max_iterations; i++) {
                 compute_gradient(n, m, x, y, model->w, model->b, gradient); 
-                model->w -= matrix_mul_scalar(gradient->dj_dw, learning_rate, n);
+
+                vector_mul_scalar(gradient->dj_dw, learning_rate, n);
+                vector_sub(model->w, gradient->dj_dw, n);
                 model->b -= learning_rate * gradient->dj_db;
         }
+        free(gradient);
         return model;
 }

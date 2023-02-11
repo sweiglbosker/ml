@@ -1,6 +1,7 @@
 all: example
 
-example: example.c ml.c matrix.c
+example: example.c matrix.c ml.c
+	${CC} $^ -o $@
 
 clean:
 	rm -rf *.o example
